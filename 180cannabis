@@ -11,6 +11,7 @@
 # Drag the formula to the left until all URLs are used
 # Copy and paste only values each column in top of each other, so as not to saturate Google Sheets
 # In a new sheet, copy and paste all the URLs of the news that contain the word "cannabis" in "https://www.180.com.uy"
+# Using the "data cleaning" automatic function, delete repeated titles
 # In the next column write the XPath "//h3"
 # Drag it down and copy it all throughout the column
 # Use the formula "=IMPORTXML(cell with URL,cell with //h3)" in the next column and drag it down to obtain all the news' titles
