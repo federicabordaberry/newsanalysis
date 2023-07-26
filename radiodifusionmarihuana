@@ -1,0 +1,40 @@
+# Install packages
+install.packages("rvest")
+install.packages("dplyr")
+install.packages("writexl")
+# Load the required libraries
+library(rvest)
+library(dplyr)
+library(writexl)
+
+# URL of the webpage
+url <- "https://mediospublicos.uy/?s=marihuana"
+
+# Read the webpage
+page <- read_html(url)
+
+# Task 1: Extract titles
+titles <- page %>%
+  html_nodes(xpath = "//h3") %>%
+  html_text()
+
+# Task 2: Extract dates
+dates <- page %>%
+  html_nodes("p small") %>%
+  html_text()
+
+# Check if the number of titles is greater than the number of dates
+# If yes, fill the missing rows in 'dates' with "N/A"
+if (length(titles) > length(dates)) {
+  missing_rows <- length(titles) - length(dates)
+  dates <- c(dates, rep("N/A", missing_rows))
+}
+
+# Combine the extracted data into a data frame
+result_df <- data.frame(Title = titles, Date = dates)
+
+# Save the data as an .xlsx file
+write_xlsx(result_df, "output_data.xlsx")
+
+# Print the result
+print(result_df)
