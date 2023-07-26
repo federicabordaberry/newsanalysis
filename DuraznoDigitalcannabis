@@ -1,0 +1,47 @@
+# The search for "cannabis" in the website "www.duraznodigital.uy" brings up only two pages
+# Enter into ChatGPT the following prompt:
+# Create a scraper for R Studio that:
+1. In the URL "https://www.duraznodigital.uy/search?q=cannabis&updated-max=2018-08-09T17:27:00-07:00&max-results=20&start=0&by-date=false" finds all the URLs after "<a class='skin-color-hover' href=" and puts them in a column called "LinksDD".
+2. In the URL "https://www.duraznodigital.uy/search?q=cannabis&updated-max=2018-08-10T03:27:00%2B03:00&max-results=20&start=20&by-date=false" finds all the URLs after "<a class='skin-color-hover' href=" and puts them in the column called "LinksDD", under the previous gathered URLs.
+# Paste the code into R Studio
+
+# Load required libraries
+library(rvest)
+library(dplyr)
+
+# Function to extract links from the given URL and add them to the "LinksDD" column
+scrape_links <- function(url, df) {
+  page <- read_html(url)
+  links <- page %>% html_nodes("a.skin-color-hover") %>% html_attr("href")
+  df <- bind_rows(df, data.frame(LinksDD = links))
+  return(df)
+}
+
+# Initialize an empty data frame to store the links
+all_links_df <- data.frame(LinksDD = character())
+
+# First URL
+url1 <- "https://www.duraznodigital.uy/search?q=cannabis&updated-max=2018-08-09T17:27:00-07:00&max-results=20&start=0&by-date=false"
+all_links_df <- scrape_links(url1, all_links_df)
+
+# Second URL
+url2 <- "https://www.duraznodigital.uy/search?q=cannabis&updated-max=2018-08-10T03:27:00%2B03:00&max-results=20&start=20&by-date=false"
+all_links_df <- scrape_links(url2, all_links_df)
+
+# Print the final data frame with all the links
+print(all_links_df)
+
+#Then add to the code a way to get the data into .xsls form so that you may download it
+
+library(writexl)
+write_xlsx(all_links_df, path = "dataset.xlsx")
+
+# Open the dataset in Google Sheets
+# In a new column write the xPath "//title" and drag it down so that each URL has a "//title" next to it
+# In another column write the formula "=IMPORTXML(cell with URL, cell with "//title")
+# Drag that cell down, so that each URL gets its own formula
+# The result should be the title of each news
+# Repeat the last step with the xPath "//i[contains(@class, 'far fa-clock')]"
+# This xPath should show the date of the news
+
+
