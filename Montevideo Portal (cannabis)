@@ -5,8 +5,9 @@
 # The first page for the searched word is https://www.montevideo.com.uy/anbuscador.aspx?1,1,cannabis,1,,0
 # The pattern between the pages is that 1 is added to the number after "cannabis,"
 # Ask ChatGPT to generate a list of URLs that add up to 66, to have the 66 URLs
+# Use this prompt: "Generate a list of 66 URLs, with the base "https://www.montevideo.com.uy/anbuscador.aspx?1,1,%C2%A0cannabis,1,,0", that changes the number after "cannabis," from 1 to 66"
 # Paste that list in a sheet in Google Sheets
-# Use the formula =TRANSPOSE(A1:A65) to change all the URLs into columns, instead of rows
+# Use the formula =TRANSPOSE(A1:A66) to change all the URLs into columns, instead of rows
 # In a row below the first URL, write the XPath "//h2[@class='title']" 
 # Drag it to the left until all URLs have an Xpath underneath it
 # One row below, write down the formula =IMPORTXML(B1,B2) 
